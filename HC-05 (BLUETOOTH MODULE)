@@ -1,0 +1,43 @@
+// Arduino 2-Channel Bluetooth Automation Code
+//jmdelectroniks//90800265658/vellore
+#include <SoftwareSerial.h>
+
+// Bluetooth module connections
+const int RXPin = 2; // Connect Bluetooth TX to Arduino RX pin 2
+const int TXPin = 3; // Connect Bluetooth RX to Arduino TX pin 2
+
+SoftwareSerial bluetooth(RXPin, TXPin); // RX, TX
+int esp_light =A2;
+int esp_fan = A3;
+int mode=0;
+// Relay or LED pins
+const int fan_pin = A5;
+const int light_pin = 11;
+
+void setup() {
+  pinMode(fan_pin, OUTPUT);
+  pinMode(light_pin, OUTPUT);
+  pinMode(esp_light,INPUT);
+  pinMode(esp_fan, INPUT);
+  digitalWrite(fan_pin, LOW); // Initialize relays to OFF
+  digitalWrite(light_pin, LOW);
+  pinMode(A4, INPUT_PULLUP);
+  Serial.begin(9600);
+  bluetooth.begin(9600);
+  pinMode(13, OUTPUT);
+  Serial.println("Bluetooth 2-Channel Automation Ready!");
+  bluetooth.println("Bluetooth 2-Channel Automation Ready!"); //send to bluetooth too.
+}
+
+void loop()
+{
+int state=digitalRead(A4);
+if (state == LOW){
+  blue();
+  digitalWrite(13,HIGH);
+}
+else 
+{
+  esp8266();
+}
+}
